@@ -1,0 +1,110 @@
+{% load static %}  <!-- static タグを使用するために追加 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+     {% csrf_token %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUMI base やおや 浜松店 予約サイト</title>
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- 外部CSS -->
+</head>
+<body>
+    <div id="app">
+
+    <!-- 動画セクション -->
+    <section id="video-section">
+        <video autoplay muted loop id="background-video">
+            <source src="{% static 'videos/restaurant_promo.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="video-overlay">
+            <img src="{% static 'images/logo.png' %}" alt="SUMI base やおや 浜松店 ロゴ" class="logo-image">
+        </div>
+    </section>
+
+    <!-- おすすめメニューセクション -->
+    <section id="menu-section">
+        <h2>SUMI base やおや 浜松店は</h2>
+        <div class="menu-items">
+            <div class="menu-item">
+                <img src="{% static 'images/S__8741407_up.jpg' %}" alt="Dish 1">
+                <h3>【炭火焼きは一味違う！】</h3>
+                <p>静岡県地鶏「富嶽鶏」を備長炭でじっくりと焼き上げました！種類豊富な焼き物はどれも味自慢の逸品◎</p>
+            </div>
+            <div class="menu-item">
+                <img src="{% static 'images/S__8741410_up.jpg' %}" alt="Dish 2">
+                <h3>【今夜は皆で宴の時間！】</h3>
+                <p>当店はお席の余裕たっぷり！4～40名様まで利用可能！おいしい炭火焼きとお得な飲み放題で盛り上がろう！</p>
+            </div>
+            <div class="menu-item">
+                <img src="{% static 'images/S__8741405_up.jpg' %}" alt="Dish 3">
+                <h3>【雰囲気◎隠れ家的お店】</h3>
+                <p>都会の影にひっそり光るピンクのネオン、ドアの向こうには炭火が香る和空間。しゃれた店内は雰囲気満点◎</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- templates/home.html（またはトップ画面） -->
+{% if special_offer %}
+<div class="special-offer">
+  <h3>{{ special_offer.title }}</h3>
+  <p>{{ special_offer.description }}</p>
+  <img src="{{ special_offer.image.url }}" alt="プレゼント画像" style="max-width:300px;">
+</div>
+{% endif %}
+
+    <!-- 予約セクション -->
+    <section id="reservation-section">
+    <form id="reservation-form" @submit.prevent="handleSubmit">
+        <h2>仮予約フォーム</h2>
+        <p>こちらから仮予約を承っています。当店からご予約の確認をさせていただき、本予約になります。ご了承ください。</p>
+        
+            <label for="name">お名前:</label>
+            <input type="text" id="name" name="name" v-model="name" required>
+
+            <label for="email">メールアドレス:</label>
+            <input type="email" id="email" name="email" v-model="email" required>
+
+             <label for="phone">お電話番号:</label>
+            <input type="tel" id="phone" name="phone" v-model="phone" placeholder="お電話番号を入力してください" required>
+
+            <label for="date-time">ご予約日とお時間:</label>
+            <input type="datetime-local" id="date-time" name="date-time" v-model="dateTime" required>
+
+            <label for="number-of-people">人数:</label>
+            <input type="number" id="number-of-people" name="number-of-people" v-model="numberOfPeople" min="1" required>
+
+            <label for="inquiry">お問い合わせ内容:</label>
+            <textarea id="inquiry" name="inquiry" rows="4" v-model="inquiry" placeholder="ご予約について、ご質問やご要望などをご記入ください"></textarea>
+
+            <button type="submit">仮予約する</button>
+        </form>
+    </section>    
+   
+
+    <!-- モーダル -->
+<div v-if="showModal" class="modal-overlay">
+  <div class="modal-content">
+    <h3>仮予約の内容確認</h3>
+    <p><strong>お名前:</strong> [[ name ]]</p>
+    <p><strong>メール:</strong> [[ email ]]</p>
+    <p><strong>予約日時:</strong> [[ formattedDateTime ]]</p>
+    <p><strong>人数:</strong> [[ numberOfPeople ]]名</p>
+    <p><strong>お問い合わせ:</strong> [[ inquiry ]]</p>
+    <hr>
+    <p>※この予約は仮予約です。当店からの連絡をもって本予約となります。</p>
+    <p>※キャンセルは前日までにご連絡ください。当日キャンセルはご遠慮ください。</p>
+
+    <button @click="closeModal">OK</button>
+  </div>
+</div>
+
+</div><!-- Vueマウント終了 -->
+    <!-- Vue 3 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="{% static 'js/base.js' %}"></script>  <!-- トップページ用のVueコンポーネント -->
+
+</body>
+</html>

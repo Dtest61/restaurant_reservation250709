@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% load static %}  <!-- これを追加して static タグを使えるようにする -->
+
+{% block content %}
+    <div id="app"></div>  <!-- Vue 3がここにマウントされる -->
+    <script src="{% static 'js/home.js' %}"></script>  <!-- トップページ用のVueコンポーネント -->
+{% endblock %}

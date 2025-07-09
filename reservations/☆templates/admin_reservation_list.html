@@ -1,0 +1,27 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<h2>仮予約一覧</h2>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>お名前</th>
+        <th>メール</th>
+        <th>予約日時</th>
+        <th>人数</th>
+        <th>お問い合わせ</th>
+        <th>作成日時</th>
+    </tr>
+    {% for r in reservations %}
+    <tr>
+        <td>{{ r.name }}</td>
+        <td>{{ r.email }}</td>
+        <td>{{ r.date_time }}</td>
+        <td>{{ r.number_of_people }}</td>
+        <td>{{ r.inquiry }}</td>
+        <td>{{ r.created_at }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">予約がまだありません。</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

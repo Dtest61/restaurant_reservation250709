@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>仮予約のご確認</title>
+</head>
+<body>
+    <p>{{ name }} 様</p>
+    <p>この度はSUMI base やおや 浜松店へのご予約ありがとうございます。</p>
+
+    <p>以下の内容で仮予約を承りました：</p>
+
+    <ul>
+        <li><strong>予約日時:</strong> {{ date_time }}</li>
+        <li><strong>人数:</strong> {{ number }} 名</li>
+        <li><strong>お問い合わせ:</strong> {{ inquiry }}</li>
+    </ul>
+
+    <p>※本予約は店舗からのご連絡をもって確定となります。</p>
+    <p>よろしくお願いいたします。</p>
+</body>
+</html>

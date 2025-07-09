@@ -1,0 +1,128 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<h2>仮予約一覧</h2>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>お名前</th>
+        <th>メール</th>
+        <th>予約日時</th>
+        <th>人数</th>
+        <th>お問い合わせ</th>
+        <th>作成日時</th>
+        <th>本予約確認</th>
+        <th>対応メモ</th>
+        <th>操作</th>
+    </tr>
+    {% for r in reservations %}
+    <tr>
+      <form method="POST" action="{% url 'update_reservation' r.id %}">
+        {% csrf_token %}
+        <td>{{ r.name }}</td>
+        <td>{{ r.email }}</td>
+        <td>{{ r.date_time }}</td>
+        <td>{{ r.number_of_people }}</td>
+        <td>{{ r.inquiry }}</td>
+        <td>{{ r.created_at|date:"Y年m月d日 H:i" }}</td>
+        <td>
+            <input type="checkbox" name="is_confirmed" {% if r.is_confirmed %}checked{% endif %}>
+        </td>
+        <td>
+            <textarea name="follow_up_note" rows="2" cols="20">{{ r.follow_up_note }}</textarea>
+        </td>
+        <td>
+            <button type="submit">登録</button>
+        </td>
+      </form>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- 管理者専用：本日の一品 投稿フォーム -->
+<section class="admin-upload">
+  <h3>本日の一品を編集</h3>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="{{ special_offer_form.title.id_for_label }}">タイトル</label>
+      {{ special_offer_form.title }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ special_offer_form.description.id_for_label }}">メニュー詳細</label>
+      {{ special_offer_form.description }}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ special_offer_form.image.id_for_label }}">画像（プレゼントの写真）</label>
+      {{ special_offer_form.image }}
+    </div>
+
+    <button type="submit" class="submit-btn">保存</button>
+  </form>
+
+{% if special_offer %}
+  <h4>現在の「本日の一品」</h4>
+  <p>{{ special_offer.title }}</p>
+  <p>{{ special_offer.description }}</p>
+  <img src="{{ special_offer.image.url }}" alt="画像" style="max-width: 200px;">
+{% endif %}
+</section>
+
+<p>ようこそ、{{ request.user.username }} さん</p>
+<a href="{% url 'logout' %}" class="btn btn-danger">ログアウト</a>
+
+<!-- ✅ モーダルHTML -->
+<div id="successModal" class="custom-modal">
+  <div class="custom-modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <p>✅ 本予約確認が完了し、お客様へ確認メールを送信しました。</p>
+  </div>
+</div>
+
+<!-- ✅ モーダルCSS -->
+<style>
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.custom-modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+
+<!-- ✅ モーダルJS -->
+<script>
+function closeModal() {
+    document.getElementById("successModal").style.display = "none";
+}
+
+{% if updated %}
+window.onload = function() {
+    document.getElementById("successModal").style.display = "block";
+};
+{% endif %}
+</script>
+
+{% endblock %}

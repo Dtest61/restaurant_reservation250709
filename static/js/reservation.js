@@ -1,0 +1,39 @@
+{% load static %}  <!-- これを追加 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>居酒屋予約サイト</title>
+
+    <!-- Vue 3 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.js"></script>
+
+    <!-- 必要ならCSSを追加 -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">ホーム</a></li>
+                <li><a href="/menu">メニュー</a></li>
+                <li><a href="/reservation">予約</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- コンテンツ部分（各ページのコンテンツを埋め込む場所） -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 △居酒屋予約サイト</p>
+    </footer>
+
+    <script src="{% static 'js/base.js' %}"></script>  <!-- VueアプリのJavaScript -->
+</body>
+</html>

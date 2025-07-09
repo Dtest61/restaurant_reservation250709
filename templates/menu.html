@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% load static %}  <!-- この行を追加 -->
+
+{% block content %}
+    <div id="menu"></div>  <!-- メニューコンポーネントをここにマウント -->
+    <script src="{% static 'js/menu.js' %}"></script>  <!-- メニュー用のVueコンポーネント -->
+{% endblock %}
